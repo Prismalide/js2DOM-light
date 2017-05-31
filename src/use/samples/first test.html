@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<!-- Project: js2DOMlight 24/5/2017 -->
+<html>
+<head>
+    <title>first test js2DOMlight-light</title>
+	<meta name="description" content="first test" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="on test" />
+
+    <meta name="robots" content="noindex" />
+
+    <link rel="stylesheet" type="text/css" title="" href="../../file.css"/>
+    <script src="../../js2DOM-light.js" > </script>
+
+<script type="text/javascript">
+<!--
+//	console.log( js2DOMlight )
+/*///
+    console.log( js2DOMlight()().out() )//=> inner br 
+    console.log( js2DOMlight()()().out() )//=> inner br br
+    console.log( js2DOMlight( { div:"" }).out() )//=> not inner div
+    console.log( js2DOMlight()()({ div:"" }).out() )//=> inner br div 
+    console.log( js2DOMlight('')({ div:"" }).out() )//=> not inner div 
+//*///
+/*///
+    o = js2DOMlight.id('test')()().div("style=''").b("teste texte")// <br /><div style='' ><b>teste texte </b></div>
+console.log (o.out())
+    o = js2DOMlight.id('test')()()({div:"style=''"}).b("teste texte")// <br /><div style='' ><b>teste texte </b></div>
+console.log ("autre écriture, div peut-être nimporte quel nom de tag")
+console.log (o.out())
+    o = js2DOMlight.id('test')()().div().b("teste texte")// <br /><div><b>teste texte </b></div>
+console.log (o.out())
+    o = js2DOMlight.id('test').div().b("teste texte")// <div><b>teste texte </b></div>
+console.log (o.out())
+//*///
+//suite (recommandation: préférez "" pour encadrer du texte à cause de l'apostrophe )
+//*///
+console.info ("span")
+    o = js2DOMlight().div()("inner dans div")()("aprés br texte")._("suite aprés div").hr()().span()("test span")// brut
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span</span>
+
+console.info ("span idem mais autre présentation du code")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            ("aprés br texte").
+        _("suite aprés div").
+        hr()
+        ()
+        .span()
+            ("test span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span</span>
+//*///
+//*///
+console.info ("suite span")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            ("aprés br texte").
+        _("suite aprés div").
+        hr()
+        ()
+        .span()
+            ("test span").
+        _("suite après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span</span>suite après span
+    /* donne en html (formaté)
+        <div>
+            inner dans div<br />
+            aprés br texte
+        </div>
+        suite aprés div
+        <hr /><br />
+        <span>
+            test span
+            <div>
+                div dans span
+            </div>
+        </span>
+        suite après span
+    */
+//*///
+//*///
+console.info ("deux dépiles consécutif")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            ("aprés br texte").
+        _("suite aprés div").
+        hr()
+        ()
+        .span()
+            ("test span").
+            div()
+                ("div dans span").
+            _.
+        _("suite après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+
+console.info ("deux dépiles consécutif avec un div ensuite")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            ("aprés br texte").
+        _("suite aprés div").
+        hr()
+        ()
+        .span()
+            ("test span").
+            div()
+                ("div dans span").
+            _.
+        _.div()
+            ("suite dans div après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+
+console.info ("idem avec breakPoint")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            ("aprés br texte").
+        _("suite aprés div").
+        hr()
+        ()
+        .o_.span()//mark a point
+            ("test span").
+            div()
+                ("div dans span").
+        _o("suite après span")//return to mark-point.nextChild and...
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+
+console.info ("idem avec breakPoint et un div ensuite")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            ("aprés br texte").
+        _("suite aprés div").
+        hr()
+        ()
+        .o_.span()//mark a point
+            ("test span").
+            div()
+                ("div dans span").
+        _o.div()//return to mark-point.nextChild and...
+            ("suite dans div après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+
+console.info ("idem avec breakPoint et un div ecrit ({div:''})(...innerdiv...)")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            ("aprés br texte").
+        _("suite aprés div").
+        hr()
+        ()
+        .o_.span()//mark a point
+            ("test span").
+            div()
+                ("div dans span").
+        _o({div:''})//return to mark-point.nextChild and...
+            ("suite dans div après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+
+console.info ("idem plus simple demo b")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            .b("aprés br texte ")._( " suite après b  ").
+        _("suite aprés div").
+        hr()
+        ()
+        .o_.span()//mark a point
+            ("test span").
+            div()
+                ("div dans span").
+        _o({div:''})//return to mark-point.nextChild and...
+            ("suite dans div après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+//*///
+console.info ("idem plus demo b i u  imbriqués)")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            .b.i.u("aprés br texte ")._._._( " suite après b.i.u ").
+        _("suite aprés div").
+        hr()
+        ()
+        .o_.span()//mark a point
+            ("test span").
+            div()
+                ("div dans span").
+        _o({div:''})//return to mark-point.nextChild and...
+            ("suite dans div après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+//*///
+console.info ("idem mais simplifier avec auto-marker no-attr sortie b i u imbriqués")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            .b.i.u("aprés br texte ")._s( " suite après b.i.u ")
+        ._("suite aprés div")
+        .hr()
+        ()
+        .o_.span()//mark a point
+            ("test span")
+            .div( "style='...'" )
+                ("div dans span")
+        ._o({div:''})//return to mark-point.nextChild and...
+            ("suite dans div après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+
+console.info ("idem mais b span u e =>test _t ok")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            .b.span( "style='...'" ).i.u.e("aprés br texte ")._t( " suite après b.span.u.e ")
+        ._("suite aprés div")
+        .hr()
+        ()
+        .o_.span()//mark a point
+            ("test span")
+            .div( "style='...'" )
+                ("div dans span")
+        ._o({div:''})//return to mark-point.nextChild and...
+            ("suite dans div après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+
+//*///
+console.info ("idem mais b span u e =>test _s en réamorcé")
+    o = js2DOMlight()
+        .div()
+            ("inner dans div")()
+            .b.span( "style='...'" ).i.u.e("aprés br texte ")._s( " suite après b.span.u.e ")
+            ._t
+        ._("suite aprés div")
+        .hr()
+        ()
+        .o_.span()//mark a point
+            ("test span")
+            .div( "style='...'" )
+                ("div dans span")
+        ._o({div:''})//return to mark-point.nextChild and...
+            ("suite dans div après span")
+console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+/*////
+
+
+//*///
+/* abandonné:
+    o = js2DOMlight.id('test')('')({div:"",span:""})("teste texte")({span:""})("texte Span")// <div><span>teste texte<span>texte Span</div></span>,</span>
+console.log (o.out())
+    o = js2DOMlight.id('test')({div:"",span:""}).b("teste texte")// <div><span><b>teste texte</div></span>,</b>
+console.log (o.out())
+    o = js2DOMlight.id('test')({div:"",span:""}).b("teste texte")._("testr up")("test")
+console.log (o.out())// <div><span><b>teste texte</b>testr uptest</div></span>
+*/
+//*///
+
+-->
+</script>
+<style type="text/css">
+<!--
+	
+-->
+</style>
+</head>
+
+<body>
+
+
+</body>
+</html>
