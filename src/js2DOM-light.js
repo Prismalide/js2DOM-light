@@ -23,14 +23,14 @@ function ( data ) {
     js2DOMlight.id = function( idName ){ idDefault = idName; return this }
     addMacroCommands( js2DOMlight )
     return js2DOMlight
-    //______ js2DOMlight ___//License code: BSD 2 modified. From prismalide.com, js2DOM-light v.0.9* gitHub for details 
+    //______ js2DOMlight ___//License code: BSD 2 modified (3 additions). From prismalide.com, js2DOM-light v.0.9* gitHub for details 
     function js2DOMlight ( firstData ) { //pseudo constructeur de js2DOMcore
         //!-closure:js2DOMlight
         //!-bringVar:
         var ObjKeys = Object.keys
         ///__ private data for js2DOMcore __\\\
         var html = htmlDefault, id = idDefault
-        var dom, inner, tagtxt, postTag, level, markers = {}, firstInSequenceTags, firstInSequenceNoAttr, sequenceControl, startSequence, startTagsLevel, startNoAttrLevel, nextNoAttr
+        var dom, inner, tagtxt, postTag, level, markers = {}, sequenceControl, startSequence, startTagsLevel, startNoAttrLevel
         ///__ init private data for js2DOMcore __\\\
         reset() 
         ///__ reset defaut html et id pour un prochain js2DOMlight __\\\
@@ -52,41 +52,38 @@ function ( data ) {
         //!-self return:
             if ( data || data == '' ) {//data '' ou inner ou tag => ''ou "..." ou {tagName:"...atrs.."} si ''=>br
                 if ( typeof data == "object" ){ 
+                    if ( data instanceof Array ) { jsonArray ( data ); return js2DOMcore }
                     var tagName = ObjKeys( data )[ 0 ]
                     var content = data[ tagName ]
-autoMarker:{//
-    sequenceControl = sequenceControl << 1
-    sequenceControl = sequenceControl & 3
-    if ( content ){ sequenceControl++ }
-    if ( !startSequence ) { startSequence = true; break autoMarker }
-    if ( !startTagsLevel ) {
-        startTagsLevel = level; markers.sequenceOfTags.push( level ) }
-    //traitement noAttr    
-    if ( startNoAttrLevel > -1 ){
-        if ( sequenceControl > 0 ){
-            startNoAttrLevel = -1
-            markers.sequenceOfNoAttr.pop()
-            }
-        break autoMarker
-        }
-    // !startNoAttrLevel
-    if ( sequenceControl > 0 ) break autoMarker 
-    startNoAttrLevel = level 
-    markers.sequenceOfNoAttr.push( startNoAttrLevel )
-    
-    }                    
+                    autoMarker:{//
+                        sequenceControl = sequenceControl << 1
+                        sequenceControl = sequenceControl & 3
+                        if ( content ){ sequenceControl++ }
+                        if ( !startSequence ) { startSequence = true; break autoMarker }
+                        if ( !startTagsLevel ) {
+                            startTagsLevel = level; markers.sequenceOfTags.push( level ) }
+                        //traitement noAttr    
+                        if ( startNoAttrLevel > -1 ){
+                            if ( sequenceControl > 0 ){
+                                startNoAttrLevel = -1
+                                markers.sequenceOfNoAttr.pop()
+                                }
+                            break autoMarker
+                            }
+                        // !startNoAttrLevel
+                        if ( sequenceControl > 0 ) break autoMarker 
+                        startNoAttrLevel = level 
+                        markers.sequenceOfNoAttr.push( startNoAttrLevel )
+                        }                    
                     tagtxt += '<'+tagName+ ( content? ' '+content+' ' : '') + '>' 
                     postTag.push('</'+tagName+'>')//+postTag)
                     level++
                     return js2DOMcore
                     }
-sequenceControl = 0
-startSequence = false
-startTagsLevel = false
-startNoAttrLevel = -1
-nextNoAttr = false
-                firstInSequenceTags = false
-                firstInSequenceNoAttr = false
+                sequenceControl = 0
+                startSequence = false
+                startTagsLevel = false
+                startNoAttrLevel = -1
                 tagtxt += data // texte dans inner
                 return js2DOMcore
                 }
@@ -104,24 +101,15 @@ nextNoAttr = false
             markers.breakPoint = []
             markers.sequenceOfTags = [] // for auto-marker sequence-of-tags
             markers.sequenceOfNoAttr = [] // for auto-marker no-attr
-
-            firstInSequenceTags = false /// 2 états false ou  niveau du premier Tag si il possède un attribut 
-            firstInSequenceNoAttr = false /// 3 états (3 states): -level of sequence no-attr started ( sequence no-attr valided ), false (wait for sequence no-attr), one level > 0 (sequence no-attr started)   
-            
-sequenceControl = 0
-startSequence = false
-startTagsLevel = false
-startNoAttrLevel = -1
-nextNoAttr = false
+            sequenceControl = 0
+            startSequence = false
+            startTagsLevel = false
+            startNoAttrLevel = -1
             }
         //______ addCommandsHtml ______//
         function addCommandsHtml ( where ) { // version html
             dynamicCommands ( js2DOMcore )
             ///__ compatibilité JSON __\\\
-            where.json = function ( data ){// data commence par un tableau représentant un inner
-                if ( !(data instanceof Array) ) console.error ( "JSON Error in js2DOM" )
-                 
-                }
             var commands = {
                 reset : function () { reset(); return this }, 
                 ext : function ( data ) { // in pour inner. data = obj:|txt:  => DOM (node:) ou html (txt:) ou plustard js2DOMlight (js2DOMcore) 
@@ -186,13 +174,22 @@ nextNoAttr = false
                     }
                 return true
                 }
-            ///__ fonction utils getCommands __\\\
-            //______ jsonArray _______//
-            function jsonArray ( data ){
-                }
             }
         //______ dynamicCommands ______//
         function dynamicCommands ( where ) { // version html
+
+            }
+        //______ jsonArray _______//
+        function jsonArray ( arrayJSON ){
+            /// c'est une macros interne déclanché par [] qui représente le tag et son inner
+            /// [{déclaration du tag }, inner1, ... , innern ] inner peut être à nouveau un arrayJSON
+            if ( typeof arrayJSON[ 0 ] == 'object'){
+                js2DOMcore( arrayJSON[ 0 ] )
+                }
+            for ( var i = 1; i < arrayJSON.length; i++ ){
+                if ( arrayJSON[ i ] instanceof Array ) { jsonArray ( arrayJSON[ i ] ); js2DOMcore._; continue }
+                js2DOMcore( arrayJSON[ i ] )
+                }
             }
 
         }//!-closure:js2DOMlight

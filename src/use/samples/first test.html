@@ -95,7 +95,7 @@ console.info ("deux dépiles consécutif")
                 ("div dans span").
             _.
         _("suite après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
 
 console.info ("deux dépiles consécutif avec un div ensuite")
     o = js2DOMlight()
@@ -112,7 +112,7 @@ console.info ("deux dépiles consécutif avec un div ensuite")
             _.
         _.div()
             ("suite dans div après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
 
 console.info ("idem avec breakPoint")
     o = js2DOMlight()
@@ -127,7 +127,7 @@ console.info ("idem avec breakPoint")
             div()
                 ("div dans span").
         _o("suite après span")//return to mark-point.nextChild and...
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
 
 console.info ("idem avec breakPoint et un div ensuite")
     o = js2DOMlight()
@@ -143,7 +143,7 @@ console.info ("idem avec breakPoint et un div ensuite")
                 ("div dans span").
         _o.div()//return to mark-point.nextChild and...
             ("suite dans div après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
 
 console.info ("idem avec breakPoint et un div ecrit ({div:''})(...innerdiv...)")
     o = js2DOMlight()
@@ -159,7 +159,7 @@ console.info ("idem avec breakPoint et un div ecrit ({div:''})(...innerdiv...)")
                 ("div dans span").
         _o({div:''})//return to mark-point.nextChild and...
             ("suite dans div après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
 
 console.info ("idem plus simple demo b")
     o = js2DOMlight()
@@ -175,7 +175,7 @@ console.info ("idem plus simple demo b")
                 ("div dans span").
         _o({div:''})//return to mark-point.nextChild and...
             ("suite dans div après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
 //*///
 console.info ("idem plus demo b i u  imbriqués)")
     o = js2DOMlight()
@@ -191,7 +191,7 @@ console.info ("idem plus demo b i u  imbriqués)")
                 ("div dans span").
         _o({div:''})//return to mark-point.nextChild and...
             ("suite dans div après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
 //*///
 console.info ("idem mais simplifier avec auto-marker no-attr sortie b i u imbriqués")
     o = js2DOMlight()
@@ -207,7 +207,27 @@ console.info ("idem mais simplifier avec auto-marker no-attr sortie b i u imbriq
                 ("div dans span")
         ._o({div:''})//return to mark-point.nextChild and...
             ("suite dans div après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
+//*///
+//*///
+console.info ("idem mais simplifier avec auto-marker no-attr sortie b i u imbriqués")
+    o = js2DOMlight()
+        ([{div:''},
+        [{div:''},
+            "inner dans div",,
+            [{b:''},[{i:''},[{u:''},"aprés br texte "]]]," suite après b.i.u "
+        ],"suite aprés div",
+        [{hr:''},
+        ,
+        [{span:''},
+            "test span",
+            [{div:"style='...'"},
+                "div dans span",
+        ]],[{div:''},
+            "suite dans div après span"
+        ]])
+console.log (o.out())
+/*///
 
 console.info ("idem mais b span u e =>test _t ok")
     o = js2DOMlight()
@@ -223,9 +243,9 @@ console.info ("idem mais b span u e =>test _t ok")
                 ("div dans span")
         ._o({div:''})//return to mark-point.nextChild and...
             ("suite dans div après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
-
+console.log (o.out())
 //*///
+/*///
 console.info ("idem mais b span u e =>test _s en réamorcé")
     o = js2DOMlight()
         .div()
@@ -241,7 +261,28 @@ console.info ("idem mais b span u e =>test _s en réamorcé")
                 ("div dans span")
         ._o({div:''})//return to mark-point.nextChild and...
             ("suite dans div après span")
-console.log (o.out())// <div>inner dans div<br />aprés br texte</div>suite aprés div<hr /><br /><span>test span<div>div dans span</div></span>suite après span
+console.log (o.out())
+/*////
+/*///
+console.info ("idem mais mais inclut dans un div en utilisant compatibilité JSON ")
+    o = js2DOMlight()
+        ([{div:''},
+        [{div:''},
+            "inner dans div",,
+            [{b:''},[{span:"style='...'" },[{i:''},[{u:''},[{em:''},"aprés br texte "]]], " suite après b.span.u.e "
+            ]]],
+        "suite aprés div",
+        [{hr:''}],
+        ,
+        [{span:''},
+            "test span",
+            [{div:"style='...'" },
+                "div dans span",
+        ]],[{div:''},
+            "suite dans div après span"
+        ]])
+            
+console.log (o.out())
 /*////
 
 
