@@ -217,7 +217,7 @@ console.info ("idem mais simplifier avec auto-marker no-attr sortie b i u imbriq
             "inner dans div",,
             [{b:''},[{i:''},[{u:''},"aprés br texte "]]]," suite après b.i.u "
         ],"suite aprés div",
-        [{hr:''},
+        [{hr:''}],
         ,
         [{span:''},
             "test span",
@@ -227,7 +227,7 @@ console.info ("idem mais simplifier avec auto-marker no-attr sortie b i u imbriq
             "suite dans div après span"
         ]])
 console.log (o.out())
-/*///
+//*///
 
 console.info ("idem mais b span u e =>test _t ok")
     o = js2DOMlight()
@@ -245,7 +245,7 @@ console.info ("idem mais b span u e =>test _t ok")
             ("suite dans div après span")
 console.log (o.out())
 //*///
-/*///
+//*///
 console.info ("idem mais b span u e =>test _s en réamorcé")
     o = js2DOMlight()
         .div()
@@ -262,8 +262,8 @@ console.info ("idem mais b span u e =>test _s en réamorcé")
         ._o({div:''})//return to mark-point.nextChild and...
             ("suite dans div après span")
 console.log (o.out())
-/*////
-/*///
+//*////
+//*///
 console.info ("idem mais mais inclut dans un div en utilisant compatibilité JSON ")
     o = js2DOMlight()
         ([{div:''},
@@ -283,7 +283,18 @@ console.info ("idem mais mais inclut dans un div en utilisant compatibilité JSO
         ]])
             
 console.log (o.out())
-/*////
+//*////
+//*/// Test class id
+console.info ("test class id")
+    o = js2DOMlight()
+        ( {div:{class1:{class2:''}}} )("test class")
+        ( {div:'',id:'monId1'} )("test id")
+        ( {div:{class2:{class1:''}}, id:'monId1'} )("teste class et id")
+console.log (o.out())
+
+
+
+
 
 
 //*///

@@ -53,8 +53,23 @@ function ( data ) {
             if ( data || data == '' ) {//data '' ou inner ou tag => ''ou "..." ou {tagName:"...atrs.."} si ''=>br
                 if ( typeof data == "object" ){ 
                     if ( data instanceof Array ) { jsonArray ( data ); return js2DOMcore }
-                    var tagName = ObjKeys( data )[ 0 ]
+                    var dataObjKeys = ObjKeys( data ) 
+                    var tagName = dataObjKeys[ 0 ]
                     var content = data[ tagName ]
+                    var objclass = content 
+                    var cls = ""
+                    ///  gestion class  \\\
+                    if ( typeof content == 'object' ) {                      
+                        cls= "class='"
+                        while ( typeof ( cls += ObjKeys( content )[0] + " ", content = content[ObjKeys( content )[0]] ) == 'object' ){}
+                        cls += "' "
+                        }
+                    content = cls + content
+                    ///  gestion id  \\\
+                    // if ( ObjKeys( data )[ 1 ] == 'id' ) { id = "id='"+data[ ObjKeys( data )[ 1 ] ] + "'" }
+                    for ( var i = 1; i < dataObjKeys.length; i++){
+                        content =  dataObjKeys[i]+ "='"+data[ dataObjKeys[i]] + "' " + content }
+                    ///  gestion auto-marker  \\\
                     autoMarker:{//
                         sequenceControl = sequenceControl << 1
                         sequenceControl = sequenceControl & 3
@@ -75,7 +90,8 @@ function ( data ) {
                         startNoAttrLevel = level 
                         markers.sequenceOfNoAttr.push( startNoAttrLevel )
                         }                    
-                    tagtxt += '<'+tagName+ ( content? ' '+content+' ' : '') + '>' 
+                    
+                    tagtxt += '<'+tagName+' '+ ( content? ' '+content : '') + '>' 
                     postTag.push('</'+tagName+'>')//+postTag)
                     level++
                     return js2DOMcore
