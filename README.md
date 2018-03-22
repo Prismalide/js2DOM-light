@@ -80,7 +80,7 @@ o = js2DOMlight()
     ._o({div:''})
         ("suite dans div après span")
 ```  
-ou en écriture format jsonHTML
+ou en écriture format jsonHTML (sans "..." pour nom de membre 
 ```json  
     [[{div:""},
         "inner dans div",,
