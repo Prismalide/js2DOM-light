@@ -82,8 +82,7 @@ o = js2DOMlight()
 ```  
 ou en écriture format jsonHTML
 ```json  
-    [{div:""},
-    [{div:""},
+    [[{div:""},
         "inner dans div",,
         [{b:""},[{i:""},[{u:""},"aprés br texte "]]]," suite après b.i.u "
     ],"suite aprés div",
