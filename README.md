@@ -81,9 +81,8 @@ o = js2DOMlight()
         ("suite dans div après span")
 ```  
 ou en écriture format jsonHTML
-```javascript  
-o = js2DOMlight()
-    ([{div:''},
+```json  
+    [{div:''},
     [{div:''},
         "inner dans div",,
         [{b:''},[{i:''},[{u:''},"aprés br texte "]]]," suite après b.i.u "
@@ -95,8 +94,7 @@ o = js2DOMlight()
         [{div:"style='...'"},
             "div dans span",
     ]],[{div:''},
-        "suite dans div après span"
-    ]])
+        "suite dans div après span" ]
 ```  
 donne en html (formaté)  
 ```html
